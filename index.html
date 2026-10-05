@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raise the Roof: Housewarming</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--yellow:#ffe600;--red:#ff2a2a;--white:#f5f5f0;--grey:#1a1a1a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--white);font-family:'Space Mono',monospace;line-height:1.5}
+.wrap{max-width:520px;margin:0 auto;padding:24px 20px 56px}
+.tape{background:var(--yellow);color:#000;font-family:'Anton',sans-serif;letter-spacing:3px;text-transform:uppercase;padding:6px 0;overflow:hidden;white-space:nowrap;transform:rotate(-2deg);margin:0 -30px 28px}
+.tape span{display:inline-block;padding-right:24px}
+h1{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;margin:0;line-height:.9}
+.title{font-size:clamp(64px,20vw,110px);color:var(--yellow);text-shadow:5px 5px 0 var(--red)}
+.sub{font-family:'Anton',sans-serif;font-size:34px;letter-spacing:2px;text-transform:uppercase;margin:10px 0 0}
+.meme{margin:24px 0;border:3px solid var(--white);background:var(--grey);padding:20px;text-align:center}
+.meme .top,.meme .bot{font-family:'Anton',sans-serif;font-size:30px;text-transform:uppercase;line-height:1.1;text-shadow:2px 2px 0 #000}
+.meme .mid{font-size:13px;color:#aaa;margin:14px 0}
+.card{border:3px solid var(--yellow);padding:18px;margin:20px 0}
+.card h2{font-family:'Anton',sans-serif;font-weight:400;font-size:26px;text-transform:uppercase;color:var(--yellow);margin:0 0 10px;letter-spacing:1px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px dashed #444;font-size:14px}
+.row:first-of-type{border-top:0}
+.row b{color:var(--red);text-transform:uppercase;font-size:12px;letter-spacing:1px;min-width:80px}
+.btn{display:block;width:100%;text-align:center;background:var(--red);color:#fff;border:0;padding:16px;font-family:'Anton',sans-serif;font-size:22px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;cursor:pointer;margin-top:14px;min-height:52px}
+.btn.alt{background:var(--yellow);color:#000}
+.btn:active{transform:translateY(2px)}
+label.lbl{display:block;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--yellow);margin:20px 0 8px}
+input[type=text],textarea{width:100%;background:#000;border:2px solid #555;color:var(--white);padding:12px;font-family:inherit;font-size:16px}
+input[type=text]:focus,textarea:focus{outline:0;border-color:var(--yellow)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label{border:2px solid #555;padding:10px 14px;font-size:14px;cursor:pointer;min-height:44px;display:flex;align-items:center}
+.chips input:checked+label{background:var(--yellow);color:#000;border-color:var(--yellow);font-weight:700}
+.chips input:focus-visible+label{outline:2px solid var(--white);outline-offset:2px}
+.note{font-size:12px;color:#999;margin-top:12px;text-align:center}
+#err{color:var(--red);font-size:13px;margin-top:10px;min-height:18px}
+#gate{position:fixed;inset:0;background:var(--bg);z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:18px}
+#gate .big{font-family:'Anton',sans-serif;font-size:clamp(56px,18vw,96px);line-height:.95;text-transform:uppercase;color:var(--yellow);text-shadow:4px 4px 0 var(--red)}
+#gate .btn{max-width:320px}
+#gate.hide{display:none}
+.player{margin:20px 0}
+footer{text-align:center;font-size:12px;color:#777;margin-top:32px}
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="big">Raise<br>the Roof</div>
+  <div style="font-size:14px;color:#bbb">Oct 9 &bull; 9 PM &bull; Sound on</div>
+  <button class="btn" id="enter" type="button">Tap to enter</button>
+</div>
+
+<div class="wrap">
+
+<div class="tape" aria-hidden="true"><span>Raise the Roof &bull; Raise the Roof &bull; Raise the Roof &bull; Raise the Roof &bull; Raise the Roof &bull; Raise the Roof &bull;</span></div>
+
+<h1 class="title">Raise<br>the Roof</h1>
+<p class="sub">The Housewarming</p>
+
+<div class="meme">
+  <div class="top">One house. Three hosts.</div>
+  <div class="mid">[ a very real photo of us pretending to be calm ]</div>
+  <div class="bot">Zero chill. You're invited.</div>
+</div>
+
+<div class="player"><div id="embed"></div></div>
+
+<div class="card">
+  <h2>The Details</h2>
+  <div class="row"><b>When</b><span id="when"></span></div>
+  <div class="row"><b>Where</b><span>Our place. Tap below for the pin.</span></div>
+  <div class="row"><b>Hosts</b><span>Malik, Ayush &amp; Vedant</span></div>
+  <div class="row"><b>Call / Text</b><span>Malik: <a href="tel:9515119336" style="color:var(--white)">9515119336</a> (<a href="sms:9515119336" style="color:var(--yellow)">text</a>)<br>Ayush: <a href="tel:9076684845" style="color:var(--white)">9076684845</a> (<a href="sms:9076684845" style="color:var(--yellow)">text</a>)</span></div>
+  <a class="btn alt" id="map" target="_blank" rel="noopener">Open in Google Maps</a>
+</div>
+
+<div class="card">
+  <h2>RSVP + Pick the Vibe</h2>
+  <form id="f" novalidate>
+    <label class="lbl" for="name">Your name</label>
+    <input type="text" id="name" autocomplete="name" placeholder="Who's coming?">
+
+    <span class="lbl" id="l1">Can you make it?</span>
+    <div class="chips" role="radiogroup" aria-labelledby="l1">
+      <input type="radio" name="going" id="g1" value="I'm in" checked><label for="g1">I'm in</label>
+      <input type="radio" name="going" id="g2" value="Maybe"><label for="g2">Maybe</label>
+      <input type="radio" name="going" id="g3" value="Can't make it"><label for="g3">Can't make it</label>
+    </div>
+
+    <span class="lbl" id="l2">What do you want to hear? (pick any)</span>
+    <div class="chips" id="music" aria-labelledby="l2"></div>
+
+    <label class="lbl" for="song">Song request (optional)</label>
+    <input type="text" id="song" placeholder="One song that must play">
+
+    <span class="lbl" id="l3">Your drink</span>
+    <div class="chips" id="drinks" role="radiogroup" aria-labelledby="l3"></div>
+
+    <div id="err" role="alert"></div>
+    <button type="submit" class="btn" id="send">Send my RSVP</button>
+  </form>
+  <div id="done" hidden>
+    <p style="font-family:'Anton',sans-serif;font-size:30px;text-transform:uppercase;color:var(--yellow);margin:8px 0">You're on the list.</p>
+    <p style="font-size:14px">The hosts got your answers. See you Oct 9.</p>
+    <a class="btn alt" id="wa" target="_blank" rel="noopener">Also tell us on WhatsApp</a>
+  </div>
+</div>
+
+<footer>Drink responsibly. Be kind to the neighbours. Don't break the furniture.</footer>
+</div>
+
+<script>
+/* ===== EDIT THESE ===== */
+var CONFIG = {
+  date: "Oct 9, 9 PM",
+  phone: "9515119336",
+  email: "abhishekmlk292000@gmail.com",
+  countryCode: "91",
+  mapsUrl: "https://maps.app.goo.gl/QakUpo4uKcuvB8Cy9?g_st=ic",
+  music: ["I fuck with the vibe of this song","Bollywood","Punjabi","Hip-hop","EDM / House","Pop hits","Throwbacks","Chill / Lo-fi"],
+  drinks: ["Beer","Vodka","Rum","Whisky","Wine","Cocktails","No alcohol"]
+};
+/* ====================== */
+
+document.getElementById('when').textContent = CONFIG.date;
+document.getElementById('map').href = CONFIG.mapsUrl;
+
+function chips(id, items, type, name){
+  var box = document.getElementById(id);
+  items.forEach(function(v, i){
+    var iid = name + i;
+    box.insertAdjacentHTML('beforeend',
+      '<input type="'+type+'" name="'+name+'" id="'+iid+'" value="'+v+'"><label for="'+iid+'">'+v+'</label>');
+  });
+}
+chips('music', CONFIG.music, 'checkbox', 'music');
+chips('drinks', CONFIG.drinks, 'radio', 'drink');
+
+document.getElementById('f').addEventListener('submit', function(e){
+  e.preventDefault();
+  var name = document.getElementById('name').value.trim();
+  var err = document.getElementById('err');
+  var drink = document.querySelector('input[name=drink]:checked');
+  var btn = document.getElementById('send');
+  if(!name){ err.textContent = 'Add your name first.'; return; }
+  if(!drink){ err.textContent = 'Pick a drink.'; return; }
+  err.textContent = '';
+  var going = document.querySelector('input[name=going]:checked').value;
+  var music = Array.prototype.map.call(document.querySelectorAll('input[name=music]:checked'), function(x){return x.value;}).join(', ') || 'Anything';
+  var song = document.getElementById('song').value.trim() || 'None';
+  btn.disabled = true; btn.textContent = 'Sending...';
+  fetch('https://formsubmit.co/ajax/' + CONFIG.email, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json','Accept':'application/json'},
+    body: JSON.stringify({
+      _subject: 'RSVP: ' + name + ' (' + going + ')',
+      _template: 'table',
+      Name: name, Status: going, Music: music, 'Song request': song, Drink: drink.value
+    })
+  }).then(function(r){ if(!r.ok) throw new Error('fail'); return r.json(); })
+  .then(function(){
+    document.getElementById('f').hidden = true;
+    var d = document.getElementById('done'); d.hidden = false;
+    var msg = 'Raise the Roof RSVP\nName: '+name+'\nStatus: '+going+'\nMusic: '+music+'\nSong request: '+song+'\nDrink: '+drink.value;
+    document.getElementById('wa').href = 'https://wa.me/'+CONFIG.countryCode+CONFIG.phone+'?text='+encodeURIComponent(msg);
+  })
+  .catch(function(){
+    err.textContent = "Couldn't send. Check your connection and try again.";
+    btn.disabled = false; btn.textContent = 'Send my RSVP';
+  });
+});
+
+/* ===== Spotify ===== */
+var ctrl=null, wantPlay=false;
+window.onSpotifyIframeApiReady=function(api){
+  api.createController(document.getElementById('embed'),
+    {uri:'spotify:track:1YiVaUok5NklFW7CCvA3T6',width:'100%',height:80,theme:0},
+    function(c){ ctrl=c; if(wantPlay){ c.play(); } });
+};
+document.getElementById('enter').addEventListener('click',function(){
+  document.getElementById('gate').classList.add('hide');
+  wantPlay=true;
+  if(ctrl){ ctrl.play(); }
+});
+</script>
+<script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+</body>
+</html>
